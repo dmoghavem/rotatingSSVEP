@@ -51,7 +51,6 @@ numFrames = round(numSecs / ifi);
 % documentation for details. In what follows we flip every frame.
 waitframes = 1;
 
-
 % Draw text in the upper portion of the screen with the default font in red
 Screen('TextSize', window, 50);
 
@@ -59,15 +58,7 @@ Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 for frame = 1:numFrames
     
-    spin(frame, ifi, 15, center, radius, 4, window);
-
-
-%     DrawFormattedText(window, 'A', rect(1), rect(2) - side/8, [1 0 0]);
-%     DrawFormattedText(window, 'B', 'right', rect(2) - side/8, [1 0 0],...
-%         [],[],[],[],[], rect);
-%     DrawFormattedText(window, 'C', 'right', rect(4) - side/8, [1 0 0],...
-%         [],[],[],[],[], rect);
-%     DrawFormattedText(window, 'D', rect(1), rect(4) - side/8, [1 0 0]);
+    spinframe(frame, ifi, 15, center, radius, 4, window, 'ABCDEFGH');
 
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
