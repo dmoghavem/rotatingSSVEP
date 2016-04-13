@@ -1,3 +1,4 @@
+%Also useless, but another cool illusion
 % Clear the workspace and the screen
 sca;
 close all;
@@ -46,9 +47,13 @@ Screen('TextSize', window, 50);
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 %less distracting
+%different sizes
+%outline around segments
+%different colored segments
+%spinning wedge
 for frame = 1:numFrames
     
-    spinframe(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
+    spinframewedge(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
 
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);

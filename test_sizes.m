@@ -30,8 +30,17 @@ ifi = Screen('GetFlipInterval', window);
 topPriorityLevel = MaxPriority(window);
 
 % Find desired center and radius of circle
-radius = min(windowRect(3:4))/6;
-[center(1), center(2)] = RectCenter(windowRect);
+for i = 1:4
+    radius(i) = min(windowRect(3:4))/(2*i);
+end
+center(1,1) = windowRect(3)/4;
+center (1,2) = windowRect(4)/4;
+center(2,1) = windowRect(3)/2;
+center (2,2) = windowRect(4)*3/8;
+center(3,1) = windowRect(3)/4;
+center (3,2) = windowRect(4)/4*3;
+center(4,1) = windowRect(3)/4*3;
+center (4,2) = windowRect(4)/4*3;
 
 % How many seconds (and frames) to spin
 numSecs = 15;
@@ -46,10 +55,15 @@ Screen('TextSize', window, 50);
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 %less distracting
+%different sizes
+%outline around segments
+%different colored segments
 for frame = 1:numFrames
     
-    spinframe(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
-
+    for size = 2:4
+        spinframe(frame, ifi, 13, center(size, :), radius(size), 6, window, 'ABCDEF');
+    end
+    
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
 

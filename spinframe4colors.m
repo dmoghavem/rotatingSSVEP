@@ -1,4 +1,4 @@
-function [] = spinframe( frame, ifi, freq, center, radius, numArcs,...
+function [] = spinframe4colors( frame, ifi, freq, center, radius, numArcs,...
     window, labels)
 %Assume frame count starts at 1, but it doesn't really matter over a span
 %of time as long as there is consistensy
@@ -12,13 +12,17 @@ buffer = 50;
 square = [center(1)-radius center(2)-radius center(1)+radius ...
     center(2)+radius];
 
+set(0, 'DefaultFigureVisible', 'off');
+colors = [1 0 0; 0 1 0; 0 0 1; 1 1 1];
+set(0, 'DefaultFigureVisible', 'on');
+
 for arc = 0:(numArcs-1)
     
     %Find desired intensity of each offset (arc) at given frame with given
     %frequency and ifi
     intensity = .5 + .5*sin(2*pi()*(freq*ifi*(frame-1) + arc/numArcs));
     
-    Screen('FillArc', window, intensity, square, ...
+    Screen('FillArc', window, intensity*colors(arc+1,:), square, ...
         arc/numArcs*360 - 90, 1/numArcs*360);
     
 end

@@ -46,9 +46,10 @@ Screen('TextSize', window, 50);
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 %less distracting
+%different colored segments
 for frame = 1:numFrames
     
-    spinframe(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
+    spinframe4colors(frame, ifi, 13, center, radius, 4, window, 'ABCD');
 
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);

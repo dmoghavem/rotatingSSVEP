@@ -46,9 +46,16 @@ Screen('TextSize', window, 50);
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 %less distracting
+%narrower intensity band
+%different sizes
+%letters inside circle
+%outline around segments
+%different colored segments
+%spinning wedges
+%rotating continuous
 for frame = 1:numFrames
     
-    spinframe(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
+    spinframeinside(frame, ifi, 13, center, radius, 6, window, 'ABCDEF');
 
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);

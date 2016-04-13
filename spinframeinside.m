@@ -1,4 +1,4 @@
-function [] = spinframe( frame, ifi, freq, center, radius, numArcs,...
+function [] = spinframeinside( frame, ifi, freq, center, radius, numArcs,...
     window, labels)
 %Assume frame count starts at 1, but it doesn't really matter over a span
 %of time as long as there is consistensy
@@ -6,7 +6,7 @@ function [] = spinframe( frame, ifi, freq, center, radius, numArcs,...
 %changes
 
 %Predefined distance of center of label from circle.
-buffer = 50;
+buffer = -radius/3;
 
 %define square circumscribing the circle
 square = [center(1)-radius center(2)-radius center(1)+radius ...
