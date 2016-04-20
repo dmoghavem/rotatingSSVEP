@@ -1,12 +1,8 @@
-function [] = spinframe( frame, ifi, freq, center, radius, numArcs,...
-    window, labels)
+function [] = spinframe( frame, ifi, freq, center, radius, numArcs, window)
 %Assume frame count starts at 1, but it doesn't really matter over a span
 %of time as long as there is consistensy
 %Inter Frame Interval (ifi) as input to keep consistency in case sample ifi
 %changes
-
-%Predefined distance of center of label from circle.
-buffer = -radius/3;
 
 %define square circumscribing the circle
 square = [center(1)-radius center(2)-radius center(1)+radius ...
@@ -23,29 +19,7 @@ for arc = 0:(numArcs-1)
     
 end
 
-if exist('labels', 'var')
-    
-for label = 1:length(labels)
-    
-pos = [center(1) - ...
-    cos((label - .5)/length(labels)*2*pi())*(radius + buffer),...
-    center(2) - ...
-    sin((label - .5)/length(labels)*2*pi())*(radius + buffer)];
 
-DrawFormattedText(window, labels(label), 'center', 'center',...
-        0, [],[],[],[],[], [pos pos]);
-    
-pos = [center(1) - ...
-    cos((label - .5)/length(labels)*2*pi())*(radius + 2*buffer),...
-    center(2) - ...
-    sin((label - .5)/length(labels)*2*pi())*(radius +2* buffer)];
-
-DrawFormattedText(window, labels(label), 'center', 'center',...
-        1, [],[],[],[],[], [pos pos]);
-    
-end
-
-end
 
 end
 

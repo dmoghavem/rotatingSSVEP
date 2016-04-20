@@ -1,189 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 % Clear the workspace and the screen
 sca;
 close all;
@@ -220,28 +34,23 @@ radius = min(windowRect(3:4))/3;
 [center(1), center(2)] = RectCenter(windowRect);
 
 % How many seconds (and frames) to spin
-numSecs = 15;
+numSecs = 5;
 numFrames = round(numSecs / ifi);
 
 % How many frames after to flip on
 waitframes = 1;
 
 % Set text size
-Screen('TextSize', window, 50);
+Screen('TextSize', window, 80);
 
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
-%less distracting
-%narrower intensity band
-%different sizes
-%letters inside circle
-%outline around segments
-%different colored segments
-%spinning wedges
-%rotating continuous
+
 for frame = 1:numFrames
     
-    spinframe(frame, ifi, 13, center, radius, 360, window, 'ABCDEF');
+    spinframe(frame, ifi, 15, center, radius, 360, window);
+    
+    lettercircle(center, radius*5/8, window, 'ABCDEF', 1);
 
     % Flip to the screen
     vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
