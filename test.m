@@ -31,30 +31,26 @@ topPriorityLevel = MaxPriority(window);
 
 % Find desired center and radius of circle
 radius = min(windowRect(3:4))/3;
-[center(1), center(2)] = RectCenter(windowRect);
+c1 = [windowRect(3)/4 windowRect(4)/2];
+c2 = [windowRect(3)*3/4 windowRect(4)/2];
 
 % How many seconds (and frames) to spin
-numSecs = 5;
-numFrames = round(numSecs / ifi);
-
-% How many frames after to flip on
-waitframes = 1;
+numSecs = 4;
 
 % Set text size
 Screen('TextSize', window, 80);
 
+%create randomly permuted vector deciding which letter is the target
+target = [ones(1,40)*1 ones(1,40)*2 ones(1,40)*3 ...
+    ones(1,40)*4 ones(1,40)*5 ones(1,40)*6];
+target = target(randperm(length(target)));
+
 Priority(topPriorityLevel);
 vbl = Screen('Flip', window);
 
-for frame = 1:numFrames
-    
-    spinframe(frame, ifi, 15, center, radius, 360, window);
-    
-    lettercircle(center, radius*5/8, window, 'ABCDEF', 1);
-
-    % Flip to the screen
-    vbl = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
-
+for trial = 1:1
+    runtrial(numSecs, ifi, 8, 17, c1, c2, radius, window, 'ABCDEF', ...
+        target(trial));
 end
 Priority(0);
 

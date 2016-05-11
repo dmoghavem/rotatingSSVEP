@@ -15,7 +15,7 @@ for arc = 0:(numArcs-1)
     intensity = .5 + .5*sin(2*pi()*(freq*ifi*(frame-1) + arc/numArcs));
     
     Screen('FillArc', window, intensity, square, ...
-        arc/numArcs*360 - 90, 1/numArcs*360);
+        arc/numArcs*360, 1/numArcs*360);
     
 end
 
