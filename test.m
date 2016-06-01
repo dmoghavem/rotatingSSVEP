@@ -1,4 +1,39 @@
+% Turn off all non-essential processes before running!!!
 % Clear the workspace and the screen
+%% Lab Streaming Layer Initialization
+% Initialization of the lab streaming layer should occur before the
+% Psychtoolbox opens a screen. That way, LabRecorder can be initialized.
+
+%%% Set up LSL for event markers
+
+lib_lsl_path = 'C:\PhyPA\Tools\LSL\LSL\liblsl-Matlab';
+
+% Add path for lsl for event markers
+addpath(genpath(lib_lsl_path));
+
+% Load lsl
+lib = lsl_loadlib();
+
+% Create Marker Stream
+disp 'Creating Marker Stream & Opening Oulet';
+
+% Sets paramaters for the data stream which is being created.
+stream_info = lsl_streaminfo(lib, 'EventMarkers', 'Markers', 1, 0, 'cf_string');
+
+% Actually intializes the data stream. marker_outlet (or inlet) is the object 
+% of almost all of LSL functions. Name is not important.
+marker_outlet = lsl_outlet(stream_info);
+
+% Use diode to measure timing via flash in top right
+% show progress under letter
+% Instructions / structure
+% Special note for feeling ill (pause or quit)
+% Ask tom about how to do psychtoolbox
+% Correlate with photodiode output instead of thoeretical refresh
+% Ask josh about running next sunday (6/4)
+
+%% Setup PsychToolbox and variables
+%clear everything
 sca;
 close all;
 clearvars;
@@ -28,11 +63,24 @@ Screen('BlendFunction', window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 ifi = Screen('GetFlipInterval', window);
 % Retreive the maximum priority number
 topPriorityLevel = MaxPriority(window);
+%instructions message before start of experiment
+instructions = ['Instructions: Two Circles will appear with three ' ...
+    'letters each.  The target letter will highlight red for one second'...
+    ', after which the circles will begin to spin very rapidly.  Please'...
+    ' focus on the target letter for the duration of the spinning, '...
+    'after which there will be a one second of pause, and then the '...
+    'process will repeat.  Please notify us if you are experiencing any'...
+    'discomfort or fatigue, or if you are at risk for epilepsy.'];
 
+
+%% Setup Experimental variables
 % Find desired center and radius of circle
 radius = min(windowRect(3:4))/3;
 c1 = [windowRect(3)/4 windowRect(4)/2];
 c2 = [windowRect(3)*3/4 windowRect(4)/2];
+
+load circle.mat;
+CIRCLEindex = Screen('MakeTexture', window, CIRCLE);
 
 % How many seconds (and frames) to spin
 numSecs = 4;
@@ -45,14 +93,32 @@ target = [ones(1,40)*1 ones(1,40)*2 ones(1,40)*3 ...
     ones(1,40)*4 ones(1,40)*5 ones(1,40)*6];
 target = target(randperm(length(target)));
 
-Priority(topPriorityLevel);
-vbl = Screen('Flip', window);
+%% Start trials
 
-for trial = 1:1
-    runtrial(numSecs, ifi, 8, 17, c1, c2, radius, window, 'ABCDEF', ...
-        target(trial));
+Priority(topPriorityLevel);
+
+DrawFormattedText(window, instructions , 'center', 'center', white);
+vbl = Screen('Flip', window);
+kbStrokeWait;
+for block = 1:10
+    wait_message = [num2str(block - 1) ' blocks done! Only ' ...
+        num2str(11-block) ' left to go!  Let us know when you are ready.'];
+    DrawFormattedText(window, wait_message , 'center', 'center', white);
+    vbl = Screen('Flip', window);
+    KbStrokeWait;
+    for trial = 24*(block-1)+1 : 24*block
+        if KbCheck
+            KbStrokeWait;
+        end
+        marker_outlet.push_sample(num2str(target(trial)))
+        runtrial(numSecs, ifi, 8, 12, c1, c2, radius, window, 'ABCDEF', ...
+            target(trial), CIRCLEindex);
+    end
 end
 Priority(0);
 
+%% Clean up
 % Clear the screen and variables
 sca;
+%Close LSL stream
+marker_outlet.delete()
